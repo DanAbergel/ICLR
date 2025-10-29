@@ -243,7 +243,8 @@ class TransformerAutoEncoder(nn.Module):
         if hasattr(self, "num_cls_tokens") and self.num_cls_tokens > 0:
             cls_tokens = self.cls_tokens.expand(B, -1, -1)
             if hasattr(self, "cls_pos_embed"):
-                cls_tokens += self.cls_pos_embed.expand(B, -1, -1)
+                # cls_tokens += self.cls_pos_embed.expand(B, -1, -1)
+                cls_tokens = cls_tokens + self.cls_pos_embed.expand(B, -1, -1)
             print(
                 f"Adding {self.num_cls_tokens} cls tokens"
             ) if self.first_pass else None
