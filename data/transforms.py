@@ -56,7 +56,6 @@ class NormalizeByRegion:
         
         # Add small epsilon to prevent division by zero
         self.std = torch.clamp(self.std, min=1e-6)
-        print("self.std.shape = ", self.std.shape)
 
     def __call__(self, sample):
         """

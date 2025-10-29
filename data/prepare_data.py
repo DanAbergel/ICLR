@@ -26,22 +26,6 @@ def prepare_dataloaders(config, stage="pretrain"):
     val_data, regions_val, index_to_info_val = val_set
     test_data, regions_test, index_to_info_test = test_set
 
-    print("Train set loaded:")
-    print("  - train_data shape:", getattr(train_data, "shape", type(train_data)))
-    print("  - regions_train shape:", getattr(regions_train, "shape", type(regions_train)))
-    print("  - Number of train samples:", len(index_to_info_tr))
-
-    print("Validation set loaded:")
-    print("  - val_data shape:", getattr(val_data, "shape", type(val_data)))
-    print("  - regions_val shape:", getattr(regions_val, "shape", type(regions_val)))
-    print("  - Number of val samples:", len(index_to_info_val))
-
-    print("Test set loaded:")
-    print("  - test_data shape:", getattr(test_data, "shape", type(test_data)))
-    print("  - regions_test shape:", getattr(regions_test, "shape", type(regions_test)))
-    print("  - Number of test samples:", len(index_to_info_test))
-
-
     result = {
         "imageID_to_labels": imageID_to_labels,
         "train_info": index_to_info_tr,

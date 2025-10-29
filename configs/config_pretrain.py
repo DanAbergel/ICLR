@@ -1,10 +1,11 @@
 from datetime import datetime
 import torch
-
+import os
 # --- Paths and Directories ---
-BASE_DATA_PATH = "/sci/labs/arieljaffe/dan.abergel1/model_test"
-BASE_RESULTS_PATH = "/results/"
-PRETRAINED_MODEL_DIR = "/tracker/pretraining_runs/"
+USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
+BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"model_test")
+BASE_RESULTS_PATH = os.path.join(USER_ROOT_DIR,"results/")
+PRETRAINED_MODEL_DIR = os.path.join(USER_ROOT_DIR, "tracker", "pretraining_runs")
 ATLAS = "schaefer200"
 
 # --- Data Settings ---
