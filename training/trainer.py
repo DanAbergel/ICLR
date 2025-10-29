@@ -6,8 +6,8 @@ import numpy as np
 import torch
 from tqdm.auto import tqdm
 
-from utils.metrics import print_metrics
-from utils.plotting import plot_grid_recon
+from ..utils.metrics import print_metrics
+from ..utils.plotting import plot_grid_recon
 from .losses import calculate_task_losses, choose_labels, handle_null_and_dtypes
 
 
