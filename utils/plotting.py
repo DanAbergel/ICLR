@@ -984,6 +984,11 @@ def plot_gradients(
 
     The first x-axis will represent training steps, and the second x-axis will represent epochs.
     """
+    # Skip plotting if no gradients were recorded
+    if gradients is None or len(gradients) == 0:
+        print("⚠️ No gradients to plot. Skipping gradient visualization.")
+        return
+
     # Calculate the number of training steps
     training_steps = np.arange(len(gradients))
 
@@ -1008,7 +1013,7 @@ def plot_gradients(
     ax2 = ax1.twiny()
 
     # Determine the number of ticks to show (e.g., show every 5th epoch)
-    num_epoch_ticks = min(max_ticks, total_epochs)  # Show max 10 ticks
+    num_epoch_ticks = min(max_ticks, total_epochs)  # Show max 40 ticks
     epoch_tick_indices = np.linspace(0, len(gradients) - 1, num_epoch_ticks).astype(int)
 
     ax2.set_xlim(ax1.get_xlim())  # Ensure both axes have the same range
@@ -1025,16 +1030,11 @@ def plot_gradients(
     # Add a legend
     ax1.legend(loc="upper left")
 
-    # Show the plot
+    # Show or save the plot
     plt.tight_layout()
-
-    # Save the figure if a path is provided
     if save_path:
         plt.savefig(save_path)
         print(f"Figure saved to {save_path}")
-        plt.close(fig)  # Close the figure to prevent it from being shown
-
+        plt.close(fig)
     else:
-        # Show the plot if no save path is provided
-        plt.tight_layout()
         plt.show()
