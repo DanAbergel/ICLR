@@ -3,7 +3,7 @@ import torch
 import os
 # --- Paths and Directories ---
 USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
-BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"hcp_data_iclr")
+BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"adni_data_iclr")
 BASE_RESULTS_PATH = os.path.join(USER_ROOT_DIR,"results_hcp/")
 PRETRAINED_MODEL_DIR = os.path.join(USER_ROOT_DIR, "tracker_hcp", "pretraining_runs")
 print("Data path is", BASE_DATA_PATH)

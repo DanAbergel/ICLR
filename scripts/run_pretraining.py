@@ -17,7 +17,14 @@ from ..utils.plotting import MetricsPlotter
 from ..utils.tracking import RunTracker, save_training_results
 from ..data.prepare_data import prepare_dataloaders, compute_num_patches_3d
 from ..utils.general import set_seed, lr_lambda_scheduler
+import builtins
+from datetime import datetime
 
+original_print = builtins.print
+def custom_print(*args, **kwargs):
+    prefix = f"[{datetime.now().strftime('%H:%M:%S')}]"
+    original_print(prefix, *args, **kwargs)
+builtins.print = custom_print
 
 def main():
     # --- Set Seed ---
