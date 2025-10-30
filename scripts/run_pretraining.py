@@ -7,6 +7,7 @@ import torch
 import torch.optim as optim
 from torch.optim.lr_scheduler import LambdaLR
 
+import psutil
 
 from ..configs import config_pretrain as config
 from ..models.ag_vit import TransformerAutoEncoder
@@ -22,7 +23,8 @@ from datetime import datetime
 
 original_print = builtins.print
 def custom_print(*args, **kwargs):
-    prefix = f"[{datetime.now().strftime('%H:%M:%S')}]"
+    ram_usage = psutil.virtual_memory().percent
+    prefix = f"[{datetime.now().strftime('%H:%M:%S')} | RAM: {ram_usage:.1f}%]"
     original_print(prefix, *args, **kwargs)
 builtins.print = custom_print
 
