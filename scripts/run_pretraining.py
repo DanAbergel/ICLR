@@ -94,6 +94,7 @@ def main():
     hyperparams['max_norm'] = config.MAX_NORM
     hyperparams["chosen_labels"] = chosen_labels
     hyperparams["len_train_dataset"] = len(dataset_tr)
+    hyperparams["track_grad"] = True
 
     tracker = RunTracker(base_dir=config.PRETRAINED_MODEL_DIR)
     run_id = tracker.create_run(description="", hparams={})
