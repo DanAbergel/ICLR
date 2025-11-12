@@ -105,7 +105,7 @@ def main():
         model=model,
         optimizer=optimizer,
         train_dataloader=train_dataloader,
-        test_dataloader=val_dataloader,
+        test_dataloader=train_dataloader,
         tracker=tracker,
         hyperparams=hyperparams,
         metrics_tracker_tr=metrics_tracker_tr,

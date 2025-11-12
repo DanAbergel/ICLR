@@ -21,7 +21,7 @@ class fmri_corr_dataset(Dataset):
         self.rnd_transform = rnd_transform
         self.custom_recon = (
             recon_transform(custom_recon)
-            if recon_transform is not None and recon_transform is not None
+            if recon_transform is not None
             else custom_recon
         )
         self.aug_probability = aug_probability

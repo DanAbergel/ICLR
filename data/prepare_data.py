@@ -34,7 +34,6 @@ def prepare_dataloaders(config, stage="pretrain"):
     }
     det_transform = transforms.Compose(
     [
-        
         scan_norm,
         Resize3D(scale_factor=0.7, align_corners=False),
     ]
