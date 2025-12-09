@@ -1,62 +1,145 @@
 import os
 import json
+import pandas as pd
+import numpy as np
 
-# === Paths setup ===
-base_dir = "/sci/labs/arieljaffe/dan.abergel1/HCP_data"
-output_dir = os.path.join(base_dir, "model_input")
-os.makedirs(output_dir, exist_ok=True)
+# ----------------------------------------------------------
+# PATHS
+# ----------------------------------------------------------
+BASE_PATH = "/sci/labs/arieljaffe/dan.abergel1/HCP_data"
+CSV_PATH = f"{BASE_PATH}/metadata/HCP_YA_subjects.csv"
+OUTPUT_INDEX = f"{BASE_PATH}/model_input/index_to_name.json"
+OUTPUT_LABELS = f"{BASE_PATH}/model_input/imageID_to_labels.json"
 
-index_to_name_path = os.path.join(output_dir, "index_to_name.json")
-imageID_to_labels_path = os.path.join(output_dir, "imageID_to_labels.json")
+# Create output directory if missing
+os.makedirs(os.path.dirname(OUTPUT_INDEX), exist_ok=True)
 
-# === Initialize structures ===
+print("🚀 Starting JSON metadata creation...")
+print(f"📂 BASE_PATH  = {BASE_PATH}")
+print(f"📄 CSV_PATH   = {CSV_PATH}")
+print("----------------------------------------------------------")
+
+# ----------------------------------------------------------
+# LOAD CSV
+# ----------------------------------------------------------
+df = pd.read_csv(CSV_PATH)
+print(f"✔️ Loaded CSV with {len(df)} rows")
+
+# ----------------------------------------------------------
+# Helper: Encode Sex
+# ----------------------------------------------------------
+def encode_sex(x):
+    if isinstance(x, str):
+        x = x.strip().upper()
+        if x == "M":
+            return 1
+        if x == "F":
+            return 0
+    return np.nan
+
+
+# ----------------------------------------------------------
+# BUILD index_to_name.json
+# AND imageID_to_labels.json
+# ----------------------------------------------------------
 index_to_name = {}
 imageID_to_labels = {}
-index = 0
+counter = 0
 
-# === Loop over subjects ===
-for subject_dir in sorted(os.listdir(base_dir)):
-    subject_path = os.path.join(base_dir, subject_dir)
-    if not os.path.isdir(subject_path) or not subject_dir.startswith("subject_"):
+print("\n🔎 Scanning BASE_PATH...\n")
+
+for item in os.listdir(BASE_PATH):
+    print("----------------------------------------------------------")
+    print(f"📁 Checking folder: {item}")
+
+    subject_dir = os.path.join(BASE_PATH, item)
+
+    if not item.startswith("subject_"):
+        print("⛔  Skipped — not a subject folder")
         continue
 
-    subject_id = subject_dir.replace("subject_", "")
+    subject_id = item.replace("subject_", "")
+    print(f"✔️ Valid subject detected: {subject_id}")
+
+    # Build expected NIFTI path
     nii_path = os.path.join(
-        subject_path, "MNINonLinear", "Results", "rfMRI_REST1_LR", "rfMRI_REST1_LR.nii.gz"
+        subject_dir,
+        "MNINonLinear",
+        "Results",
+        "rfMRI_REST1_LR",
+        "rfMRI_REST1_LR.nii.gz"
     )
 
-    if os.path.exists(nii_path):
-        # Clean up filename (remove .nii or .nii.gz)
-        filename = os.path.basename(nii_path)
-        if filename.endswith(".nii.gz"):
-            filename = filename[:-7]
-        elif filename.endswith(".nii"):
-            filename = filename[:-4]
-
-        entry = {
-            "filename": filename,
-            "subject_id": subject_id,
-            "date": "N/A",
-            "image_id": subject_id
-        }
-        index_to_name[str(index)] = entry
-
-        # Add empty label dictionary for this image_id
-        imageID_to_labels[subject_id] = {}
-
-        index += 1
+    if not os.path.isfile(nii_path):
+        print(f"❌ Missing NIfTI file → {nii_path}")
+        continue
     else:
-        print(f"⚠️ Missing file for {subject_id}")
+        print(f"📄 Found NIfTI file → {nii_path}")
 
-# === Save index_to_name.json ===
-with open(index_to_name_path, "w") as f:
-    json.dump(index_to_name, f, indent=4)
+    # Unique image ID
+    image_id = f"{subject_id}_REST1_LR"
+    print(f"🆔 Image ID = {image_id}")
 
-# === Save imageID_to_labels.json ===
-with open(imageID_to_labels_path, "w") as f:
-    json.dump(imageID_to_labels, f, indent=4)
+    # ------------------------------------------------------
+    # index_to_name entry
+    # ------------------------------------------------------
+    index_to_name[str(counter)] = {
+        "filename": nii_path.replace(BASE_PATH + "/", ""),
+        "subject_id": subject_id,
+        "date": "N/A",
+        "image_id": image_id
+    }
+    print(f"📝 Added index_to_name[{counter}]")
 
-# === Logs ===
-print(f"✅ index_to_name.json created at: {index_to_name_path}")
-print(f"✅ imageID_to_labels.json created at: {imageID_to_labels_path}")
-print(f"Total subjects indexed: {index}")
+    # ------------------------------------------------------
+    # labels entry → from CSV
+    # ------------------------------------------------------
+    row = df[df["Subject"].astype(str) == subject_id]
+
+    if row.empty:
+        print(f"⚠ CSV row NOT FOUND for subject {subject_id}")
+        labels = {
+            "Sex": np.nan,
+            "Age": np.nan,
+            "Sex_Binary": np.nan
+        }
+    else:
+        row_dict = row.iloc[0].to_dict()
+        print(f"📄 CSV row (raw) = {row_dict}")
+
+        # Convert numpy types to Python types
+        row_dict = {
+            k: (None if pd.isna(v) else v)
+            for k, v in row_dict.items()
+        }
+
+        # Add binary sex
+        row_dict["Sex_Binary"] = encode_sex(
+            row_dict.get("Gender", None) or row_dict.get("Sex", None)
+        )
+
+        print(f"🔧 Cleaned CSV row + added Sex_Binary: {row_dict}")
+        labels = row_dict
+
+    imageID_to_labels[image_id] = labels
+    print(f"🏷 Saved labels for imageID = {image_id}")
+
+    counter += 1
+    print(f"➕ Counter → {counter}")
+
+# ----------------------------------------------------------
+# SAVE JSON FILES
+# ----------------------------------------------------------
+print("\n💾 Saving output JSON files...")
+
+with open(OUTPUT_INDEX, "w") as f:
+    json.dump(index_to_name, f, indent=2)
+print(f"✔️ Saved: {OUTPUT_INDEX}")
+
+with open(OUTPUT_LABELS, "w") as f:
+    json.dump(imageID_to_labels, f, indent=2)
+print(f"✔️ Saved: {OUTPUT_LABELS}")
+
+print("\n🎉 DONE!")
+print(f"📊 Total subjects processed = {counter}")
+print("----------------------------------------------------------\n")

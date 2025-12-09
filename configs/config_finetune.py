@@ -1,12 +1,16 @@
 from datetime import datetime
 import torch
+import os
 
 # --- Paths and Directories ---
-BASE_DATA_PATH = "path/to/your/data"
+USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
+BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"hcp_data_iclr")
 BASE_RESULTS_PATH = "results/"
 # Path to the best checkpoint from the pretraining run
-PRETRAINED_CHECKPOINT_PATH = "results/pretraining_runs/your_pretrain_run_id/model.pt"
-FINETUNE_MODEL_DIR = "results/finetuning_runs/"
+PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_hcp/pretraining_runs/904d0790-0bb1-467c-b9d1-a3ece890a4f2/model.pt"
+print("pretrained model path is", BASE_DATA_PATH)
+FINETUNE_MODEL_DIR = os.path.join(USER_ROOT_DIR,"results/finetuning_runs/")
+print("results path is", FINETUNE_MODEL_DIR)
 
 
 # --- Data Settings ---
@@ -15,10 +19,12 @@ VAL_SPLIT = 0.1
 TEST_SPLIT = 0.2
 SEED = 44
 WINDOW_SIZE = 10
+REMOVE_TOP_K_STD = 1
 
 # --- Fine-tuning Task Configuration ---
 # Example: Predicting cognitive decline at 1-year horizon
-FINETUNE_TASK = "degradation_binary_1year"
+# FINETUNE_TASK = "degradation_binary_1year"
+FINETUNE_TASK = "Sex_Binary"
 TASKS_TYPES = {
     FINETUNE_TASK: "binary",
 }
@@ -48,64 +54,7 @@ BEST_METRIC_NAME = "f1"  # Monitor F1-score for best model
 
 # # --- Task and Loss Configuration ---
 
-# TASKS = [
-#     "Sex_Binary",
-#     "MMSE_Binary",
-#     "CDR_Binary",
-#     "FAQ_Binary",
-#     "Age_Category",
-#     "GDSCALE_Category",
-#     "CDR_Category",
-#     "CDMEMORY",
-#     "CDRSB",
-#     "degradation_binary_1year",
-#     "degradation_binary_2years",
-#     "degradation_binary_3years",
-# ]
+TASKS = [
+    FINETUNE_TASK,
+]
 
-# # Weights for each task's loss
-# TASK_WEIGHTS = {
-#     "Sex_Binary": 1,
-#     "MMSE_Binary": 1,
-#     "CDR_Binary": 1,
-#     "FAQ_Binary": 1,
-#     "Age_Category": 1,
-#     "GDSCALE_Category": 1,
-#     "CDR_Category": 1,
-#     "CDMEMORY": 1,
-#     "CDRSB": 1,
-#     "Reconstruction": 1,
-# }
-
-# # Mapping of task names to their type ('binary', 'categorical', 'regression')
-# TASKS_TYPES = {
-#     "Sex_Binary": "binary",
-#     "MMSE_Binary": "binary",
-#     "CDR_Binary": "binary",
-#     "FAQ_Binary": "binary",
-#     "Age_Category": "categorical",
-#     "GDSCALE_Category": "categorical",
-#     "CDR_Category": "categorical",
-#     "CDMEMORY": "categorical",
-#     "CDRSB": "categorical",
-#     "Reconstruction": "regression",
-#     "degradation_binary_1year": "binary",
-#     "degradation_binary_2years": "binary",
-#     "degradation_binary_3years": "binary",
-# }
-
-
-# CATEGORY_TO_DIM = {
-#     "Sex_Binary": 1,
-#     "MMSE_Binary": 1,
-#     "CDR_Binary": 1,
-#     "FAQ_Binary": 1,
-#     "Age_Category": 4,
-#     "GDSCALE_Category": 4,
-#     "CDR_Category": 4,
-#     "CDMEMORY": 4,
-#     "CDRSB": 19,
-#     "degradation_binary_1year": 1,
-#     "degradation_binary_2years": 1,
-#     "degradation_binary_3years": 1,
-# }

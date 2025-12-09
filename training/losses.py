@@ -49,24 +49,56 @@ def calculate_balanced_weights(imageID_to_labels, tasks_types, device):
     return task_weights
 
 
-def get_loss_fns(config, class_weights):
+# def get_loss_fns(config, class_weights):
+#     """Creates a dictionary of loss functions for each task."""
+#     loss_fns = {}
+#     tasks_with_loss = config.TASKS + ["Reconstruction"]
+#     for task in tasks_with_loss:
+#         task_type = config.TASKS_TYPES.get(task)
+#         if task_type == "binary":
+#             loss_fns[task] = nn.BCEWithLogitsLoss(
+#                 reduction="none", pos_weight=class_weights.get(task)
+#             )
+#         elif task_type == "categorical":
+#             loss_fns[task] = nn.CrossEntropyLoss(
+#                 reduction="none", weight=class_weights.get(task)
+#             )
+#         elif task_type == "regression":
+#             loss_fns[task] = nn.MSELoss(reduction="none")
+#     return loss_fns
+#
+
+def get_loss_fns(config, class_weights=None):
     """Creates a dictionary of loss functions for each task."""
+    # If no class_weights provided, use an empty dict
+    if class_weights is None:
+        class_weights = {}
+
     loss_fns = {}
-    tasks_with_loss = config.TASKS + ["Reconstruction"]
+    tasks_with_loss = list(config.TASKS) + ["Reconstruction"]
+
     for task in tasks_with_loss:
+        # Special case for Reconstruction if it is not in TASKS_TYPES
+        if task == "Reconstruction":
+            loss_fns[task] = nn.MSELoss(reduction="none")
+            continue
+
         task_type = config.TASKS_TYPES.get(task)
+
         if task_type == "binary":
             loss_fns[task] = nn.BCEWithLogitsLoss(
-                reduction="none", pos_weight=class_weights.get(task)
+                reduction="none",
+                pos_weight=class_weights.get(task)  # will be None if not in dict
             )
         elif task_type == "categorical":
             loss_fns[task] = nn.CrossEntropyLoss(
-                reduction="none", weight=class_weights.get(task)
+                reduction="none",
+                weight=class_weights.get(task)      # will be None if not in dict
             )
         elif task_type == "regression":
             loss_fns[task] = nn.MSELoss(reduction="none")
-    return loss_fns
 
+    return loss_fns
 
 def handle_null_and_dtypes(outputs, target, loss_fns):
     """Filters out NaN targets and ensures correct data types for loss calculation."""
