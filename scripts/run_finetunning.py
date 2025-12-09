@@ -3,7 +3,6 @@ import os
 import torch
 import torch.optim as optim
 
-from data.helpers_da.create_json_metadata import imageID_to_labels
 from ..configs import config_finetune as config
 
 from ..models.heads import PredictionHead
