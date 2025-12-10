@@ -76,8 +76,11 @@ def main():
     for k, v in vars(config).items():
         clean_hyperparams[k] = make_json_safe(v)
 
-    chosen_labels = config.FINETUNE_TASK
-    clean_hyperparams["chosen_labels"] = chosen_labels
+    clean_hyperparams["chosen_labels"] = config.FINETUNE_TASK
+    print(clean_hyperparams)
+    clean_hyperparams["num_epochs"] = config.NUM_EPOCHS
+    print(clean_hyperparams)
+
     # --- Initialize and Run FineTuner ---
     finetuner = FineTuner(
         model=pretrained_model,
