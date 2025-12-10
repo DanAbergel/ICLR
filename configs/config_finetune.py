@@ -24,9 +24,13 @@ REMOVE_TOP_K_STD = 1
 # --- Fine-tuning Task Configuration ---
 # Example: Predicting cognitive decline at 1-year horizon
 # FINETUNE_TASK = "degradation_binary_1year"
-FINETUNE_TASK = "Sex_Binary"
+# FINETUNE_TASK = "Sex_Binary"
+FINETUNE_TASK = "Age_in_Yrs"
+# TASKS_TYPES = {
+#     FINETUNE_TASK: "binary",
+# }
 TASKS_TYPES = {
-    FINETUNE_TASK: "binary",
+    FINETUNE_TASK: "regression",
 }
 OUTPUT_DIMS = {FINETUNE_TASK: 1}
 CHOSEN_LABELS = [FINETUNE_TASK]
