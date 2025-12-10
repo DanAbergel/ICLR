@@ -7,7 +7,7 @@ from ..configs import config_finetune as config
 
 from ..models.heads import PredictionHead
 # from ..models.ag_vit import TransformerAutoEncoder
-from ..training.losses import get_loss_fns
+from ..training.losses import get_loss_fns, calculate_balanced_weights
 from ..training.trainer import FineTuner
 from ..utils.metrics import MetricsTracker
 from ..utils.tracking import RunTracker
