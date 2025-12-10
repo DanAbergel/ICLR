@@ -64,6 +64,9 @@ def main():
         weight_decay=config.OPTIMIZER_WEIGHT_DECAY,
     )
     imageID_to_labels = data_components["imageID_to_labels"]
+    for k, v in imageID_to_labels.items():
+        if "Age_in_Yrs" in v:
+            v["Age_in_Yrs"] = float(v["Age_in_Yrs"])
     class_weights = calculate_balanced_weights(imageID_to_labels, config.TASKS_TYPES, device)
     loss_fns = get_loss_fns(config, class_weights=class_weights)
     metrics_tracker_tr = MetricsTracker(config.TASKS_TYPES)

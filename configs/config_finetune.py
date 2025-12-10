@@ -53,7 +53,7 @@ START_DATE = datetime.now().strftime("%d/%m/%Y")
 
 # --- Checkpointing ---
 CHECKPOINT_PERCENTAGE = 0.0  # Only save at the end
-BEST_METRIC_NAME = "f1"  # Monitor F1-score for best model
+BEST_METRIC_NAME = "rmse"  # Monitor F1-score for best model
 
 
 # # --- Task and Loss Configuration ---
