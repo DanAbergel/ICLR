@@ -77,9 +77,7 @@ def main():
         clean_hyperparams[k] = make_json_safe(v)
 
     clean_hyperparams["chosen_labels"] = config.FINETUNE_TASK
-    print(clean_hyperparams)
     clean_hyperparams["num_epochs"] = config.NUM_EPOCHS
-    print(clean_hyperparams)
 
     # --- Initialize and Run FineTuner ---
     finetuner = FineTuner(

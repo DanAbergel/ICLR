@@ -36,11 +36,11 @@ TASK_WEIGHTS = {FINETUNE_TASK: 1.0}
 # The input dimension must match the flattened bottleneck dimension from the pretrained model
 # (MERGE_PATCHES * EMBEDDING_DIM from pretrain config = 10 * 128 = 1280)
 HEAD_INPUT_DIM = 1280
-HEAD_P_DROPOUT = 0.2
-LR = 3e-5  #
-NUM_EPOCHS = 20
-BATCH_SIZE = 8
-OPTIMIZER_WEIGHT_DECAY = 1e-5
+HEAD_P_DROPOUT = 0.4
+LR = 1e-5  #
+NUM_EPOCHS = 10
+BATCH_SIZE = 16
+OPTIMIZER_WEIGHT_DECAY = 5e-4
 
 # --- Runtime and Logging ---
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
