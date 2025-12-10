@@ -61,6 +61,16 @@ def collate_fn_corr(batch):
             else:
                 # Pad with NaN for missing labels
                 default_val = float("nan")
+                ######## HELP to DEBUG ################
+                for d in labels_dicts:
+                    val = d.get(key, default_val)
+                    if val is None:
+                        print("❌ [LABEL ERROR] key:", key)
+                        print("   ↳ d =", d)
+                        print("   ↳ default_val =", default_val)
+                        print("   ↳ labels_dicts =", labels_dicts)
+                        raise ValueError("Found None value for key '{}'".format(key))
+                ########################################
                 tensor_list = [
                     torch.tensor(d.get(key, default_val)) for d in labels_dicts
                 ]
