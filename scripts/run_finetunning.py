@@ -48,6 +48,16 @@ def main():
     pretrained_model = torch.load(
         config.PRETRAINED_CHECKPOINT_PATH, map_location=device,weights_only = False
     )
+    print("PRETRAINED MODEL =====> ",pretrained_model)
+    def count_params(model):
+        total = sum(p.numel() for p in model.parameters())
+        trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        return total, trainable
+
+    total, trainable = count_params(pretrained_model)
+    print(f"Total params: {total:,}")
+    print(f"Trainable params: {trainable:,}")
+
 
     pretrained_model.eval()
     # --- Initialize Prediction Head ---
