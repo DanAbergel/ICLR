@@ -1,11 +1,12 @@
 from datetime import datetime
 import torch
 import os
+from pathlib import Path
 # --- Paths and Directories ---
-USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
-BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"hcp_data_iclr")
-BASE_RESULTS_PATH = os.path.join(USER_ROOT_DIR,"results_hcp/")
-PRETRAINED_MODEL_DIR = os.path.join(USER_ROOT_DIR, "tracker_hcp", "pretraining_runs")
+USER_ROOT_DIR = Path("/sci/labs/arieljaffe/dan.abergel1")
+BASE_DATA_PATH = USER_ROOT_DIR / "hcp_data_iclr"
+BASE_RESULTS_PATH = USER_ROOT_DIR / "results_hcp/"
+PRETRAINED_MODEL_DIR = USER_ROOT_DIR / "tracker_hcp" / "pretraining_runs"
 print("Data path is", BASE_DATA_PATH)
 ATLAS = "schaefer200"
 
