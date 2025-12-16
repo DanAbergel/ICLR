@@ -24,14 +24,11 @@ REMOVE_TOP_K_STD = 1
 # --- Fine-tuning Task Configuration ---
 # Example: Predicting cognitive decline at 1-year horizon
 # FINETUNE_TASK = "degradation_binary_1year"
-# FINETUNE_TASK = "Sex_Binary"
-FINETUNE_TASK = "Age_in_Yrs"
-# TASKS_TYPES = {
-#     FINETUNE_TASK: "binary",
-# }
+FINETUNE_TASK = "Sex_Binary"
 TASKS_TYPES = {
-    FINETUNE_TASK: "regression",
+    FINETUNE_TASK: "binary",
 }
+
 OUTPUT_DIMS = {FINETUNE_TASK: 1}
 CHOSEN_LABELS = [FINETUNE_TASK]
 TASK_WEIGHTS = {FINETUNE_TASK: 1.0}
@@ -40,10 +37,10 @@ TASK_WEIGHTS = {FINETUNE_TASK: 1.0}
 # The input dimension must match the flattened bottleneck dimension from the pretrained model
 # (MERGE_PATCHES * EMBEDDING_DIM from pretrain config = 10 * 128 = 1280)
 HEAD_INPUT_DIM = 1280
-HEAD_P_DROPOUT = 0.4
-LR = 1e-5  #
-NUM_EPOCHS = 10
-BATCH_SIZE = 16
+HEAD_P_DROPOUT = 0.2
+LR = 3e-5  #
+NUM_EPOCHS = 30
+BATCH_SIZE = 32
 OPTIMIZER_WEIGHT_DECAY = 5e-4
 
 # --- Runtime and Logging ---
@@ -53,7 +50,7 @@ START_DATE = datetime.now().strftime("%d/%m/%Y")
 
 # --- Checkpointing ---
 CHECKPOINT_PERCENTAGE = 0.0  # Only save at the end
-BEST_METRIC_NAME = "rmse"  # Monitor F1-score for best model
+BEST_METRIC_NAME = "precision"  # Monitor F1-score for best model
 
 
 # # --- Task and Loss Configuration ---
