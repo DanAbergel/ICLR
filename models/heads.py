@@ -1,4 +1,4 @@
-# import torch.nn as nn
+import torch.nn as nn
 #
 #
 # class PredictionHead(nn.Module):
@@ -26,22 +26,16 @@
 #         return task_predictions
 
 
-import torch.nn as nn
 
 class PredictionHead(nn.Module):
-    def __init__(self, embedding_dim, output_dims, p_dropout=0.5):
+    def __init__(self, embedding_dim, output_dims,p_dropout=0.2):
         super().__init__()
-
-        hidden_dim = 64  # volontairement petit
-
-        self.task_heads = nn.ModuleDict()
-        for task, output_dim in output_dims.items():
-            self.task_heads[task] = nn.Sequential(
-                nn.Linear(embedding_dim, hidden_dim),
-                nn.ReLU(),
-                nn.Dropout(p_dropout),
-                nn.Linear(hidden_dim, output_dim),
-            )
+        print("Init PredictionHead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        self.task_heads = nn.ModuleDict({
+            task: nn.Linear(embedding_dim, output_dim)
+            for task, output_dim in output_dims.items()
+        })
 
     def forward(self, x):
+        print("Forward!!!!!!!")
         return {task: head(x) for task, head in self.task_heads.items()}
