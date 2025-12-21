@@ -112,6 +112,10 @@ def load_and_process_data(config):
     schaefer_atlas = torch.load(
         f"{config.BASE_DATA_PATH}/data/time_regions_tensor_not_normalized_schaefer.pt"
     )
+    print(
+        f"[DEBUG] all_data_4d samples = {all_data_4d.size(0)} | "
+        f"schaefer_atlas samples = {schaefer_atlas.size(0)}"
+    )
     schaefer_atlas = schaefer_atlas.permute(0, 2, 1)  # samples, regions, time
 
     std_data = np.std(all_data_4d.numpy(), axis=tuple(range(1, all_data_4d.data.ndim)))
