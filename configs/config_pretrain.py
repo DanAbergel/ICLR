@@ -4,9 +4,9 @@ import os
 from pathlib import Path
 # --- Paths and Directories ---
 USER_ROOT_DIR = Path("/sci/labs/arieljaffe/dan.abergel1")
-BASE_DATA_PATH = USER_ROOT_DIR / "adni_data_iclr"
-BASE_RESULTS_PATH = USER_ROOT_DIR / "results_adni/"
-PRETRAINED_MODEL_DIR = USER_ROOT_DIR / "tracker_adni" / "pretraining_runs"
+BASE_DATA_PATH = USER_ROOT_DIR / "hcp_data_iclr"
+BASE_RESULTS_PATH = USER_ROOT_DIR / "results_hcp/"
+PRETRAINED_MODEL_DIR = USER_ROOT_DIR / "tracker_hcp" / "pretraining_runs"
 print("Data path is", BASE_DATA_PATH)
 ATLAS = "schaefer200"
 
