@@ -90,8 +90,8 @@ def create_batches():
 
                 # Slice temporal window [T_MIN : T_MAX] (or until end if shorter)
                 t_start = T_MIN
-                t_end = min(T_MAX, T)
-                data = data[:, :, :, t_start:t_end]
+                # t_end = min(T_MAX, T)
+                data = data[:, :, :, t_start:T]
 
                 # Create a sliced NIfTI to ensure Schaefer uses the same temporal window
                 nii_sliced = nib.Nifti1Image(data, affine=nii.affine, header=nii.header)
