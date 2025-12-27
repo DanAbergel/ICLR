@@ -9,7 +9,7 @@ import json
 # CONFIGURATION
 # ==============================================================
 base_dir = "/sci/labs/arieljaffe/dan.abergel1/HCP_data"
-output_dir = os.path.join(base_dir, "data")
+output_dir = os.path.join(base_dir, "data_full")
 os.makedirs(output_dir, exist_ok=True)
 
 index_to_name_path = os.path.join(output_dir, "index_to_name.json")
