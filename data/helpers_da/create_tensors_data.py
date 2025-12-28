@@ -161,11 +161,13 @@ def merge_batches(output_path, pattern, label):
     offset = 0
 
     for f in tqdm(files, desc=f"Merging {label}", ncols=100):
-        batch = torch.load(os.path.join(output_dir, f), map_location="cpu")
+        batch_file = os.path.join(output_dir, f)
+        batch = torch.load(batch_file, map_location="cpu")
         final[offset:offset + batch.shape[0]] = batch
         offset += batch.shape[0]
         del batch
         gc.collect()
+        os.remove(batch_file)
 
     ram()
 
