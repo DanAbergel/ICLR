@@ -184,5 +184,5 @@ def merge_all():
 # EXECUTION CONTROL
 # ==============================================================
 if __name__ == "__main__":
-    create_batches()   # ➜ Phase 1 : crée les batchs (et supprime les sujets invalides)
+    # create_batches()   # ➜ Phase 1 : crée les batchs (et supprime les sujets invalides)
     merge_all()        # ➜ Phase 2 : fusionne les batchs

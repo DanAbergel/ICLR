@@ -36,7 +36,7 @@ TASK_WEIGHTS = {FINETUNE_TASK: 1.0}
 # --- Fine-tuning Head & Training Hyperparameters ---
 # The input dimension must match the flattened bottleneck dimension from the pretrained model
 # (MERGE_PATCHES * EMBEDDING_DIM from pretrain config = 10 * 128 = 1280)
-HEAD_INPUT_DIM = 32256  # 1280
+HEAD_INPUT_DIM = 1280  # 32256
 HEAD_P_DROPOUT = 0.2
 LR = 3e-5  #
 NUM_EPOCHS = 10
