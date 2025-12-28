@@ -17,8 +17,8 @@ index_to_name_path = os.path.join(output_dir, "index_to_name.json")
 BATCH_SIZE = 100
 standardize = False
 EXPECTED_SPATIAL_SHAPE = (46, 55, 46)
-T_MIN = 150
-T_MAX = 350
+T_MIN = 200
+T_MAX = 600
 
 final_4d_path = os.path.join(output_dir, "all_4d_downsampled.pt")
 final_schaefer_path = os.path.join(output_dir, "time_regions_tensor_not_normalized_schaefer.pt")
@@ -90,8 +90,8 @@ def create_batches():
 
                 # Slice temporal window [T_MIN : T_MAX] (or until end if shorter)
                 t_start = T_MIN
-                # t_end = min(T_MAX, T)
-                data = data[:, :, :, t_start:T]
+                t_end = min(T_MAX, T)
+                data = data[:, :, :, t_start:t_end]
 
                 # Create a sliced NIfTI to ensure Schaefer uses the same temporal window
                 nii_sliced = nib.Nifti1Image(data, affine=nii.affine, header=nii.header)
@@ -186,5 +186,5 @@ def merge_all():
 # EXECUTION CONTROL
 # ==============================================================
 if __name__ == "__main__":
-    # create_batches()   # ➜ Phase 1 : crée les batchs (et supprime les sujets invalides)
+    create_batches()   # ➜ Phase 1 : crée les batchs (et supprime les sujets invalides)
     merge_all()        # ➜ Phase 2 : fusionne les batchs
