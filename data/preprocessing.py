@@ -109,6 +109,8 @@ def load_and_process_data(config):
         imageID_to_labels = json.load(f)
 
     all_data_4d = torch.load(f"{config.BASE_DATA_PATH}/data/all_4d_downsampled.pt")
+    print("all_data_4d.shape ======> ",all_data_4d.shape)
+    print("all_data_4d.device ======> ",all_data_4d.device)
     schaefer_atlas = torch.load(
         f"{config.BASE_DATA_PATH}/data/time_regions_tensor_not_normalized_schaefer.pt"
     )
