@@ -4,12 +4,15 @@ from datetime import datetime
 from nilearn import datasets
 from nilearn.maskers import NiftiLabelsMasker
 import json
+import shutil
 
 # ==============================================================
 # CONFIGURATION
 # ==============================================================
 base_dir = "/sci/labs/arieljaffe/dan.abergel1/HCP_data"
 output_dir = os.path.join(base_dir, "data_full")
+shutil.rmtree(output_dir)
+os.makedirs(output_dir, exist_ok=True)
 os.makedirs(output_dir, exist_ok=True)
 
 index_to_name_path = os.path.join(output_dir, "index_to_name.json")
@@ -18,7 +21,7 @@ BATCH_SIZE = 100
 standardize = False
 EXPECTED_SPATIAL_SHAPE = (46, 55, 46)
 T_MIN = 200
-T_MAX = 600
+T_MAX = 800
 
 final_4d_path = os.path.join(output_dir, "all_4d_downsampled.pt")
 final_schaefer_path = os.path.join(output_dir, "time_regions_tensor_not_normalized_schaefer.pt")
