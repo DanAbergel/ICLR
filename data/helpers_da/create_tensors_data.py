@@ -21,7 +21,7 @@ BATCH_SIZE = 100
 standardize = False
 EXPECTED_SPATIAL_SHAPE = (46, 55, 46)
 T_MIN = 200
-T_MAX = 700
+T_MAX = 600
 
 final_4d_path = os.path.join(output_dir, "all_4d_downsampled.pt")
 final_schaefer_path = os.path.join(output_dir, "time_regions_tensor_not_normalized_schaefer.pt")

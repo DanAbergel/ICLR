@@ -14,7 +14,7 @@ ATLAS = "schaefer200"
 VAL_SPLIT = 0.1
 TEST_SPLIT = 0.2
 SEED = 44
-WINDOW_SIZE = 50
+WINDOW_SIZE = 40
 REMOVE_TOP_K_STD = 1
 
 # --- Model Architecture ---
