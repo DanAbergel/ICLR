@@ -24,6 +24,46 @@ class fmri_corr_dataset(Dataset):
             if recon_transform is not None
             else custom_recon
         )
+        # ===================== SANITY CHECK =====================
+        if self.custom_recon is not None:
+            with torch.no_grad():
+                recon = self.custom_recon
+                print("RECON SHAPE ===========> ", recon.shape)
+
+                # Case 1: [N, R]
+                if recon.dim() == 2:
+                    print("###################################### CASE [N,R]")
+                    # Mean per subject (over regions)
+                    subject_means = recon.mean(dim=1)
+                    max_abs_mean = subject_means.abs().max().item()
+
+                # Case 2: [N, R, T]
+                elif recon.dim() == 3:
+                    print("###################################### CASE [N,R,T]")
+
+                    # Mean over time, per subject, per ROI
+                    # Shape: [N, R]
+                    subject_roi_means = recon.mean(dim=2)
+
+                    max_abs_mean = subject_roi_means.abs().max().item()
+
+                else:
+                    raise ValueError(
+                        f"Unsupported custom_recon shape: {recon.shape}"
+                    )
+
+                print(
+                    f"[CHECK] Subject-wise ROI temporal centering | "
+                    f"max |mean(subject, ROI)| = {max_abs_mean:.6f}"
+                )
+
+                if max_abs_mean > 1e-3:
+                    raise ValueError(
+                        "❌ Subject-wise ROI normalization check FAILED: "
+                        "temporal mean is not close to 0. "
+                        "Check region_norm."
+                    )
+        # =======================================================
         self.aug_probability = aug_probability
 
     def __len__(self):
