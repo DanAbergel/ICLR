@@ -4,10 +4,10 @@ import os
 
 # --- Paths and Directories ---
 USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
-BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"hcp_data_iclr")
+BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"adni_data_iclr")
 BASE_RESULTS_PATH = "results/"
 # Path to the best checkpoint from the pretraining run
-PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_hcp/pretraining_runs/ff5dd00b-0c59-4361-94c5-956707619af0/model.pt"
+PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_adni/pretraining_runs/a608c085-44f4-4cf2-8119-5393ce608aad/model.pt"
 print("pretrained model path is", BASE_DATA_PATH)
 FINETUNE_MODEL_DIR = os.path.join(USER_ROOT_DIR,"results/finetuning_runs/")
 print("results path is", FINETUNE_MODEL_DIR)
