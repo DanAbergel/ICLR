@@ -7,7 +7,8 @@ USER_ROOT_DIR = "/sci/labs/arieljaffe/dan.abergel1"
 BASE_DATA_PATH = os.path.join(USER_ROOT_DIR,"adni_data_iclr")
 BASE_RESULTS_PATH = "results/"
 # Path to the best checkpoint from the pretraining run
-PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_adni/pretraining_runs/a608c085-44f4-4cf2-8119-5393ce608aad/model.pt"
+# PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_adni/pretraining_runs/a608c085-44f4-4cf2-8119-5393ce608aad/model.pt"
+PRETRAINED_CHECKPOINT_PATH = "/sci/labs/arieljaffe/dan.abergel1/tracker_adni/pretraining_runs/7361f404-32db-475e-b938-f4024ac9db1c/model.pt"
 print("pretrained model path is", BASE_DATA_PATH)
 FINETUNE_MODEL_DIR = os.path.join(USER_ROOT_DIR,"results/finetuning_runs/")
 print("results path is", FINETUNE_MODEL_DIR)

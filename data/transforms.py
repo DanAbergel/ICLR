@@ -35,36 +35,48 @@ class Resize3D:
         return resized
 
 
-
 class NormalizeByRegion:
-    def __init__(self,tensor,eps=1e-6):
+    def __init__(self, tensor):
         """
-        Intra-subject, region-wise temporal normalization.
+        Initialize region-wise normalization for tensors with arbitrary spatial dimensions.
 
-        For each subject and each region (spatial location),
-        subtract the temporal mean (and optionally divide by std).
-
-        This enforces:
-            mean_t X(subject, region, t) = 0
+        Args:
+            tensor: The full dataset tensor of shape [samples, spatial_1, ..., spatial_k, time]
+                   where spatial_1 through spatial_k represent arbitrary spatial dimensions.
         """
-        self.eps = eps
+        # Get the number of dimensions in the tensor
+        n_dims = len(tensor.shape)
+        # The dimensions we want to average over are samples (0) and time (-1)
+        dims_to_reduce = [0, -1]
+
+        # Calculate mean and std across samples and time dimension
+        # This preserves the spatial dimensions while reducing samples and time
+        self.mean = tensor.mean(dim=dims_to_reduce)
+        self.std = tensor.std(dim=dims_to_reduce)
+
+        # Add small epsilon to prevent division by zero
+        self.std = torch.clamp(self.std, min=1e-6)
 
     def __call__(self, sample):
         """
+        Normalize a single sample using precomputed region-wise statistics.
+
         Args:
-            sample: Tensor of shape [spatial_1, ..., spatial_k, time]
+            sample: A single sample tensor of shape [spatial_1, ..., spatial_k, time]
         Returns:
-            Normalized sample of same shape
+            Normalized sample tensor of the same shape
         """
-        # Compute mean over time for this subject
-        mean_t = sample.mean(dim=-1, keepdim=True)
+        # Move time dimension to first position for normalization
+        pattern = '... time -> time ...'
+        sample = einops.rearrange(sample, pattern)
 
-        # (Optional) also normalize by temporal std
-        std_t = sample.std(dim=-1, keepdim=True)
-        std_t = torch.clamp(std_t, min=self.eps)
+        # Apply normalization
+        # Broadcasting will automatically handle arbitrary spatial dimensions
+        sample = (sample - self.mean) / self.std
 
-        # Z-score over time, per region
-        sample = (sample - mean_t) / std_t
+        # Move time dimension back to the end
+        pattern = 'time ... -> ... time'
+        sample = einops.rearrange(sample, pattern)
 
         return sample
 
