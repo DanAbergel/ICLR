@@ -95,6 +95,7 @@ def main():
     hyperparams["chosen_labels"] = chosen_labels
     hyperparams["len_train_dataset"] = len(dataset_tr)
     hyperparams["track_grad"] = True
+    hyperparams['print_percentage']=1
 
     tracker = RunTracker(base_dir=config.PRETRAINED_MODEL_DIR)
     run_id = tracker.create_run(description="", hparams={})
